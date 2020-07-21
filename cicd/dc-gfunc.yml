@@ -4,7 +4,7 @@ services:
   gfunc:
     build: ${PROJECT_HOME}/cicd/dockerfile/gfunc
     volumes:
-      - ${PROJECT_HOME}/google-functions:/app
+      - ${PROJECT_HOME}:/app
     ports:
       - 9005:9005
     stdin_open: true
