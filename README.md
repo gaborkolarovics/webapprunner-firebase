@@ -1,5 +1,7 @@
 # webapprunner-firebase
 
+![Build and Deploy CI](https://github.com/gaborkolarovics/webapprunner-firebase/workflows/Build%20and%20Deploy%20CI/badge.svg)
+
 Firebase cloud message for Android [WebAppRunner](https://play.google.com/store/apps/details?id=hu.polidor.webapprunner) application
 
 * Send notification vith curl:
