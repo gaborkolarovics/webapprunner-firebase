@@ -6,10 +6,9 @@
  */
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-const serviceAccount = require('./webapprunner-1093-firebase-adminsdk-ftbvi-db57a6fba5.json');
 
 // Initialize Firebase admin
-admin.initializeApp({ credential: admin.credential.cert(serviceAccount), databaseURL: 'https://webapprunner-1093.firebaseio.com' });
+admin.initializeApp();
 
 /**
  * Checks if a CharSequence is empty (""), null or whitespace only.

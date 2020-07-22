@@ -3,11 +3,15 @@ name: Build and Deploy CI
 on:
   push:
     branches: [ master ]
+    paths:
+    - 'functions/**'
   pull_request:
     branches: [ master ]
+    paths:
+      - 'functions/**'
 
 jobs:
-  build:
+  build_and_deploy:
 
     runs-on: ubuntu-latest
 
@@ -16,11 +20,15 @@ jobs:
         node-version: [10.x]
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm install -g firebase-tools
-    - run: npm clean-install --prefix ./functions
-    - run: firebase deploy --token ${{ secrets.FIREBASE_TOKEN }}
+    - name: Install firebase tool to global
+      run: npm install -g firebase-tools
+    - name: Clean install project dependencies
+      run: npm clean-install --prefix ./functions
+    - name: Deploy to cloud
+      run: firebase deploy --token ${{ secrets.FIREBASE_TOKEN }}
