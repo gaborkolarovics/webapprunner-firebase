@@ -75,22 +75,34 @@ function resolveNotificationFromRequest(request) {
  * SendPusNotification cloud function
  */
 exports.sendPushNotification = functions.https.onRequest((request, response) => {
-  let message;
-  try {
-    message = resolveNotificationFromRequest(request);
-  } catch (error) {
-    response.status(400).json({ message: 'Error resolve message: ' + error });
-    return;
+
+  response.set('Access-Control-Allow-Origin', '*');
+  if (request.method === 'OPTIONS') {
+    // Send response to OPTIONS requests
+    response.set('Access-Control-Allow-Methods', 'POST');
+    response.set('Access-Control-Allow-Headers', 'Content-Type');
+    response.status(204).send('');
+  } else {
+    let message;
+    try {
+      message = resolveNotificationFromRequest(request);
+    } catch (error) {
+      // Send bad request, because somethig input field is empty
+      response.status(400).json({ message: 'Error resolve message: ' + error });
+      return;
+    }
+    admin.messaging().send(message)
+      .then((result) => {
+        // Send success response
+        response.status(200).json({ message: 'Successfully sent message: ' + result });
+        return result;
+      })
+      .catch((error) => {
+        // Send server error response
+        console.log('Error sending message:', error);
+        response.status(500).json({ message: 'Error sending message: ' + error });
+        return error;
+      });
   }
-  admin.messaging().send(message)
-    .then((result) => {
-      response.status(200).json({ message: 'Successfully sent message: ' + result });
-      return result;
-    })
-    .catch((error) => {
-      console.log('Error sending message:', error);
-      response.status(500).json({ message: 'Error sending message: ' + error });
-      return error;
-    });
 
 });
