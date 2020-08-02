@@ -52,23 +52,22 @@ function resolveNotificationFromRequest(request) {
     throw new Error('Message is empty!');
   }
 
-  let link = null;
-  if (!isBlank(request.body.link)) {
-    link = request.body.link;
-  }
-
-  return {
+  let fcmMessage = {
     token: request.body.token,
     notification: {
       title: request.body.title,
       body: request.body.message
-    },
-    android: {
-      data: {
-        link: link
-      }
     }
   };
+  if (!isBlank(request.body.link)) {
+    fcmMessage.android = {
+      data: {
+        link: request.body.link
+      }
+    };
+  }
+
+  return fcmMessage;
 }
 
 /**
