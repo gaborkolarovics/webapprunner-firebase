@@ -23,4 +23,6 @@ jobs:
     - name: Clean install project dependencies
       run: npm clean-install --prefix ./functions
     - name: Deploy to cloud
-      run: firebase deploy --token ${{ secrets.FIREBASE_TOKEN }}
+      env:
+        GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_TOKEN }}
+      run: firebase deploy
