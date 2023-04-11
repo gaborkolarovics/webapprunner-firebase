@@ -1,4 +1,4 @@
-FROM node:10
+FROM node:16
 LABEL maintener="gabor.kolarovics@gmail.com"
 
 RUN npm install -g firebase-tools

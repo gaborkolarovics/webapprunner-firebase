@@ -1,0 +1,29 @@
+name: Nightly build
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # run at 2 AM UTC
+
+jobs:
+  nightly-build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Clone Repo
+      uses: actions/checkout@v3
+    - name: set up Node 16
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+    - name: Clean install project dependencies
+      run: npm clean-install --prefix ./functions
+    - name: Lint
+      run: npm run lint
+    - name: Audit project
+      run: npm audit
+    - name: SonarCloud Scan
+      uses: sonarsource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
