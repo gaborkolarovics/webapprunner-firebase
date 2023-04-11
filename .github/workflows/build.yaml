@@ -10,7 +10,7 @@ on:
       types: [opened, synchronize, reopened]
 
 jobs:
-  build_and_deploy:
+  build:
 
     runs-on: ubuntu-latest
 
@@ -22,15 +22,18 @@ jobs:
     - uses: actions/setup-node@v3
       with:
         node-version: 16
-    - run: npm clean-install --prefix ./functions
+    - run: npm clean-install
+      working-directory: ./functions
     - run: npm run lint
+      working-directory: ./functions
     - run: npm audit
+      working-directory: ./functions
     - uses: sonarsource/sonarcloud-github-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       with:
-        projectBaseDir: functions
+        projectBaseDir: ./functions
         args: >
           -Dsonar.organization=gaborkolarovics
           -Dsonar.projectKey=gaborkolarovics_webapprunner-firebase
