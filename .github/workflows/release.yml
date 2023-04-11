@@ -1,31 +1,23 @@
-name: Build and Deploy CI
+name: Deploy CI
 
 on:
   push:
     branches: [ master ]
     paths:
     - 'functions/**'
-  pull_request:
-    branches: [ master ]
-    paths:
-      - 'functions/**'
 
 jobs:
-  build_and_deploy:
+  release:
 
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [10.x]
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+    - name: Clone Repo
+      uses: actions/checkout@v3
+    - name: set up Node 16
+      uses: actions/setup-node@v3
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 16
     - name: Install firebase tool to global
       run: npm install -g firebase-tools
     - name: Clean install project dependencies

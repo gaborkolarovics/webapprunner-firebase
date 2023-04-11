@@ -1,0 +1,30 @@
+name: Build
+
+on:
+  # Trigger analysis when pushing in master or pull requests, and when creating
+  # a pull request.
+  push:
+    branches:
+      - master
+  pull_request:
+      types: [opened, synchronize, reopened]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        # Disabling shallow clone is recommended for improving relevancy of reporting
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16
+    - run: npm clean-install
+      working-directory: ./functions
+    - run: npm run lint
+      working-directory: ./functions
+    - run: npm audit
+      working-directory: ./functions
