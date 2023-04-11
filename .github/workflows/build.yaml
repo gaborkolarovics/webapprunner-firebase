@@ -28,12 +28,3 @@ jobs:
       working-directory: ./functions
     - run: npm audit
       working-directory: ./functions
-    - uses: sonarsource/sonarcloud-github-action@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      with:
-        projectBaseDir: ./functions
-        args: >
-          -Dsonar.organization=gaborkolarovics
-          -Dsonar.projectKey=gaborkolarovics_webapprunner-firebase
