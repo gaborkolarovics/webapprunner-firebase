@@ -20,5 +20,7 @@ jobs:
       run: npm clean-install --prefix ./functions
     - name: Lint
       run: npm run lint
+      working-directory: ./functions
     - name: Audit project
       run: npm audit
+      working-directory: ./functions
